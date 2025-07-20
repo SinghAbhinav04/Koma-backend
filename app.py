@@ -10,6 +10,10 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
+@app.route("/", methods=["GET"])
+def get_hey():
+    return "hey", 200
+    
 app.register_blueprint(auth_bp, url_prefix="/auth")
 app.register_blueprint(manga_bp, url_prefix="/koma")
 
