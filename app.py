@@ -6,7 +6,7 @@ import os
 import sys
 
 
-CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:3000"]}}, supports_credentials=True)
+CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:3000"]}})
 
 @app.after_request
 def add_cors_headers(response):
