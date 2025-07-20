@@ -9,3 +9,4 @@ Flask-Cors
 werkzeug
 cryptography
 gunicorn
+aiohttp
