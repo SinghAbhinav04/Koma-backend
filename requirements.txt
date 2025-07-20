@@ -1,0 +1,10 @@
+Flask
+pymongo
+python-dotenv
+cloudinary
+Pillow
+google-generativeai
+PyJWT
+Flask-Cors
+werkzeug
+cryptography
