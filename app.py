@@ -11,7 +11,7 @@ print(f"Working directory: {os.getcwd()}")
 print(f"Files in directory: {os.listdir('.')}")
 
 app = Flask(__name__)
-CORS(app, origins="*")
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 @app.route("/", methods=["GET"])
 def get_hey():
