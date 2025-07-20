@@ -1,9 +1,11 @@
 # routes/auth.py
+from aiohttp import Payload
 from flask import Blueprint, request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
-from utils.jwt_handler import generate_token
-from models.user_schema import create_user, find_user_by_email_or_username
+from utils.jwt_handler import generate_token , decode_token
+from models.user_schema import create_user, find_user_by_email_or_username , users , comics
 from utils.encrypt_decrypt import encrypt_api_key
+from bson.objectid import ObjectId
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -39,3 +41,73 @@ def login():
 
     token = generate_token(user["_id"])
     return jsonify({"message": "Login successful", "token": token})
+
+@auth_bp.route("/me", methods=["GET"])
+def authenticate_me():
+    token = request.headers.get("Authorization", "").replace("Bearer ", "")
+    
+    if not token:
+        return jsonify({"error": "No authentication token found"}), 401
+    
+    try:
+        payload = decode_token(token)
+        user_id = payload["user_id"]
+
+        user = users.find_one({"_id": ObjectId(user_id)}, {"password_hash": 0, "api_cipher": 0})
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+
+        # Convert ObjectId to string for JSON serialization
+        user["_id"] = str(user["_id"])
+        
+        return jsonify({"user": user}), 200
+
+    except Exception as e:
+        print("Token verification error:", e)
+        return jsonify({"error": "Invalid or expired token"}), 401
+
+@auth_bp.route("/profile", methods=["GET"])
+def get_profile():
+    token = request.headers.get("Authorization", "").replace("Bearer ", "")
+    try:
+        payload = decode_token(token)
+        user_id = payload["user_id"]
+
+        user = users.find_one({"_id": ObjectId(user_id)}, {"password_hash": 0, "api_cipher": 0})
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+
+        user["_id"] = str(user["_id"])  # Convert ObjectId to string
+        return jsonify(user), 200
+
+    except Exception as e:
+        print("Profile fetch error:", e)
+        return jsonify({"error": "Invalid or expired token"}), 401
+
+
+@auth_bp.route("/delete", methods=["DELETE"])
+def delete_account():
+    token = request.headers.get("Authorization", "").replace("Bearer ", "")
+    try:
+        payload = decode_token(token)
+        user_id = payload["user_id"]
+
+        # Delete comics by this user
+        comics.delete_many({"user_id": ObjectId(user_id)})
+        # Delete user
+        users.delete_one({"_id": ObjectId(user_id)})
+
+        return jsonify({"message": "Account deleted successfully"}), 200
+
+    except Exception as e:
+        print("Delete error:", e)
+        return jsonify({"error": "Invalid or expired token"}), 401
+
+@auth_bp.route("/logout", methods=["POST"])
+def logout():
+    token = request.headers.get("Authorization", "").replace("Bearer ", "")
+    try:
+        decode_token(token)  # Just check token validity
+        return jsonify({"message": "Logout successful. Please clear token client-side."}), 200
+    except Exception:
+        return jsonify({"error": "Invalid or expired token"}), 401

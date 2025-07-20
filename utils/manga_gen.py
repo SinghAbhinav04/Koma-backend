@@ -9,7 +9,6 @@ from models.user_schema import get_user_api_key
 
 def get_genai_client(user_id):
     api_key = get_user_api_key(user_id)
-# testing succesfull
     if not api_key:
         raise ValueError("API key not found or decryption failed")
     return genai.Client(api_key=api_key)
@@ -17,9 +16,14 @@ def get_genai_client(user_id):
 def generate_panel_prompt(prompt , user_id):
     client = get_genai_client(user_id)
     system_prompt = (
-        "You are a story-based manga scene generator. Given a user prompt, generate six creative and cinematic manga-style panel ideas. "
-        "Each panel should begin with 'Manga style panel:' and describe a unique scene from a manga. Return all as one string.\n\n"
-        f"User prompt: {prompt}"
+    "You are a story-based manga scene generator. Given a user prompt, generate six creative and cinematic manga-style panel ideas. "
+    "Each panel should begin with 'Manga style panel:' and describe a unique scene from a manga. "
+    "The panels will be arranged in a 2x3 grid layout (2 columns, 3 rows), with each panel being 320x140 pixels. "
+    "Design each panel considering this aspect ratio - use horizontal compositions that work well in this rectangular format. "
+    "Vary between close-ups, medium shots, and wide shots to create visual flow. "
+    "Ensure the six panels tell a cohesive story with good pacing and dramatic tension. "
+    "Return all panels as one string.\n\n"
+    f"User prompt: {prompt}"
     )
 
     panel_prompts = []

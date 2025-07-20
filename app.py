@@ -11,7 +11,7 @@ print(f"Working directory: {os.getcwd()}")
 print(f"Files in directory: {os.listdir('.')}")
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins="*")
 
 @app.route("/", methods=["GET"])
 def get_hey():
@@ -39,4 +39,4 @@ print("Flask app setup complete!")
 
 if __name__ == "__main__":
     load_dotenv()
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
