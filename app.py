@@ -7,7 +7,13 @@ import sys
 
 app = Flask(__name__)
 
-CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:3000"]}}, supports_credentials=True)
+CORS(app, resources={
+    r"/*": {
+        "origins": ["http://127.0.0.1:3000"],
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"],
+    }
+}, supports_credentials=True)
 
 @app.after_request
 def add_cors_headers(response):
