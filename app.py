@@ -1,6 +1,7 @@
+from dotenv import load_dotenv
+load_dotenv()
 from flask import Flask
 from flask_cors import CORS
-from dotenv import load_dotenv
 import os
 import sys
 
@@ -9,7 +10,6 @@ print(f"Python path: {sys.path}")
 print(f"Working directory: {os.getcwd()}")
 print(f"Files in directory: {os.listdir('.')}")
 
-load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
