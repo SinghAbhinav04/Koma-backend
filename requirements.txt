@@ -8,3 +8,4 @@ PyJWT
 Flask-Cors
 werkzeug
 cryptography
+gunicorn
