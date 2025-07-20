@@ -42,6 +42,10 @@ def login():
     token = generate_token(user["_id"])
     return jsonify({"message": "Login successful", "token": token})
 
+@auth_bp.route("/login", methods=["GET"])
+def login_test():
+    return "hey from Koma login page", 200
+
 @auth_bp.route("/me", methods=["GET"])
 def authenticate_me():
     token = request.headers.get("Authorization", "").replace("Bearer ", "")
