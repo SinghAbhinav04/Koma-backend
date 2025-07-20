@@ -9,6 +9,7 @@ from models.user_schema import get_user_api_key
 
 def get_genai_client(user_id):
     api_key = get_user_api_key(user_id)
+    print(f"API Key for {user_id}: {api_key}") #testing , will be removed after test
     if not api_key:
         raise ValueError("API key not found or decryption failed")
     return genai.Client(api_key=api_key)
