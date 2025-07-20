@@ -3,7 +3,7 @@ pymongo
 python-dotenv
 cloudinary
 Pillow
-google-generativeai
+google-genai
 PyJWT
 Flask-Cors
 werkzeug
