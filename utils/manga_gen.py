@@ -20,8 +20,8 @@ def generate_panel_prompt(prompt , user_id):
     "Each panel should begin with 'Manga style panel:' and describe a unique scene from a manga. "
     "The panels will be arranged in a 2x3 grid layout (2 columns, 3 rows), with each panel being 320x140 pixels. "
     "Design each panel considering this aspect ratio - use horizontal compositions that work well in this rectangular format. "
-    "Vary between close-ups, medium shots, and wide shots to create visual flow. "
     "Ensure the six panels tell a cohesive story with good pacing and dramatic tension. "
+    "All images must look animated and should be black and white it possible(**add guide to generate black and white images in each panel**)"
     "Return all panels as one string.\n\n"
     f"User prompt: {prompt}"
     )
